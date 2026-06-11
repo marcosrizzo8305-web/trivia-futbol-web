@@ -51,23 +51,22 @@ h2 {
 .option-card {
   background-color: #222;
   border-radius: 12px;
-  overflow: hidden;
+  padding: 12px;
   cursor: pointer;
   transition: transform 0.2s;
 }
 
-.option-card img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
 .option-card p {
   margin: 0;
-  padding: 8px;
   font-size: 18px;
 }
 
 .option-card:hover {
   transform: scale(1.05);
+}
+
+#timer {
+  font-size: 20px;
+  margin-top: 10px;
+  color: #ffcc00;
 }
