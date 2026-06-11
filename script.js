@@ -1,11 +1,61 @@
-function startCarrera() {
-  alert("Entrando en Modo Carrera...");
+const questions = [
+  {
+    question: "¿Quién ganó el Mundial de 1986?",
+    options: ["Brasil", "Argentina", "Alemania"],
+    answer: "Argentina"
+  },
+  {
+    question: "¿Qué jugador tiene más goles en mundiales?",
+    options: ["Miroslav Klose", "Pelé", "Messi"],
+    answer: "Miroslav Klose"
+  },
+  {
+    question: "¿Cuál es el estadio más grande de Inglaterra?",
+    options: ["Old Trafford", "Wembley", "Anfield"],
+    answer: "Wembley"
+  }
+];
+
+let currentQuestion = 0;
+
+function startGame() {
+  document.getElementById("menu").style.display = "none";
+  document.getElementById("game").style.display = "block";
+  showQuestion();
 }
 
-function startOnline() {
-  alert("Entrando en Modo Online...");
+function showQuestion() {
+  const q = questions[currentQuestion];
+  document.getElementById("question").innerText = q.question;
+
+  const optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
+
+  q.options.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.innerText = opt;
+    btn.className = "premium-btn";
+    btn.onclick = () => checkAnswer(opt);
+    optionsDiv.appendChild(btn);
+  });
 }
 
-function openConfig() {
-  alert("Abriendo Configuración...");
+function checkAnswer(selected) {
+  const q = questions[currentQuestion];
+  const result = document.getElementById("result");
+
+  if (selected === q.answer) {
+    result.innerText = "✅ Correcto!";
+  } else {
+    result.innerText = "❌ Incorrecto. La respuesta era: " + q.answer;
+  }
+
+  currentQuestion++;
+  if (currentQuestion < questions.length) {
+    setTimeout(showQuestion, 1500);
+  } else {
+    setTimeout(() => {
+      document.getElementById("game").innerHTML = "<h2>Juego terminado 🎉</h2>";
+    }, 1500);
+  }
 }
