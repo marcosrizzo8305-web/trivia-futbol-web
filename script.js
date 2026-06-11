@@ -2,27 +2,27 @@ const questions = [
   {
     question: "¿Quién ganó el Mundial de 1986?",
     options: [
-      { name: "Argentina", image: "maradona.jpg" },
-      { name: "Brasil", image: "pele.jpg" },
-      { name: "Alemania", image: "klose.jpg" }
+      { name: "Argentina", image: "https://upload.wikimedia.org/wikipedia/commons/5/5c/Maradona-Mundial_86_con_la_copa.JPG" },
+      { name: "Brasil", image: "https://upload.wikimedia.org/wikipedia/commons/1/16/Pele_1970.jpg" },
+      { name: "Alemania", image: "https://upload.wikimedia.org/wikipedia/commons/4/4a/Miroslav_Klose_Portrait.JPG" }
     ],
     answer: "Argentina"
   },
   {
     question: "¿Qué jugador tiene más goles en mundiales?",
     options: [
-      { name: "Miroslav Klose", image: "klose.jpg" },
-      { name: "Pelé", image: "pele.jpg" },
-      { name: "Messi", image: "messi.jpg" }
+      { name: "Miroslav Klose", image: "https://upload.wikimedia.org/wikipedia/commons/4/4a/Miroslav_Klose_Portrait.JPG" },
+      { name: "Pelé", image: "https://upload.wikimedia.org/wikipedia/commons/1/16/Pele_1970.jpg" },
+      { name: "Messi", image: "https://upload.wikimedia.org/wikipedia/commons/8/89/Lionel_Messi_2018.jpg" }
     ],
     answer: "Miroslav Klose"
   },
   {
     question: "¿Cuál es el estadio más grande de Inglaterra?",
     options: [
-      { name: "Wembley", image: "wembley.jpg" },
-      { name: "Old Trafford", image: "oldtrafford.jpg" },
-      { name: "Anfield", image: "anfield.jpg" }
+      { name: "Wembley", image: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Wembley_Stadium_interior.jpg" },
+      { name: "Old Trafford", image: "https://upload.wikimedia.org/wikipedia/commons/6/6d/Old_Trafford_inside.jpg" },
+      { name: "Anfield", image: "https://upload.wikimedia.org/wikipedia/commons/5/5c/Anfield_inside.jpg" }
     ],
     answer: "Wembley"
   }
