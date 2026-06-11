@@ -1,4 +1,3 @@
-// Preguntas con imágenes locales
 const questions = [
   {
     question: "¿Quién ganó el Mundial de 1986?",
@@ -32,7 +31,6 @@ const questions = [
 let currentQuestion = 0;
 
 function startGame() {
-  // Oculta menú y muestra juego
   document.getElementById("menu").style.display = "none";
   document.getElementById("game").style.display = "block";
   currentQuestion = 0;
