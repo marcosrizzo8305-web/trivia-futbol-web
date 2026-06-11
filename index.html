@@ -7,7 +7,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>Trivia Futbol</h1>
+    <h1 id="game-title">Trivia Futbol</h1>
 
     <!-- Menú inicial -->
     <div id="menu">
@@ -16,12 +16,15 @@
 
     <!-- Juego -->
     <div id="game" style="display:none;">
-      <p id="question"></p>
-      <div id="options"></div>
+      <h2 id="question"></h2>
+      <div id="options" class="options-grid"></div>
       <p id="result"></p>
     </div>
-  </div>
 
+    <!-- Sonidos -->
+    <audio id="sound-correct" src="https://www.soundjay.com/button/sounds/button-3.mp3"></audio>
+    <audio id="sound-wrong" src="https://www.soundjay.com/button/sounds/button-10.mp3"></audio>
+  </div>
   <script src="script.js"></script>
 </body>
 </html>
