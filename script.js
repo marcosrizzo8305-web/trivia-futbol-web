@@ -1,3 +1,4 @@
+// Preguntas de trivia
 const questions = [
   {
     question: "¿Quién ganó el Mundial de 1986?",
@@ -18,12 +19,15 @@ const questions = [
 
 let currentQuestion = 0;
 
+// Inicia el juego
 function startGame() {
   document.getElementById("menu").style.display = "none";
   document.getElementById("game").style.display = "block";
+  currentQuestion = 0;
   showQuestion();
 }
 
+// Muestra la pregunta actual
 function showQuestion() {
   const q = questions[currentQuestion];
   document.getElementById("question").innerText = q.question;
@@ -38,8 +42,11 @@ function showQuestion() {
     btn.onclick = () => checkAnswer(opt);
     optionsDiv.appendChild(btn);
   });
+
+  document.getElementById("result").innerText = "";
 }
 
+// Verifica la respuesta
 function checkAnswer(selected) {
   const q = questions[currentQuestion];
   const result = document.getElementById("result");
