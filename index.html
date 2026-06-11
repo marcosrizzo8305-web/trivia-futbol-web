@@ -8,9 +8,15 @@
 <body>
   <div class="container">
     <h1>Trivia Futbol</h1>
-    <button class="premium-btn" onclick="startCarrera()">Modo Carrera</button>
-    <button class="premium-btn" onclick="startOnline()">Modo Online</button>
-    <button class="premium-btn" onclick="openConfig()">Configuración</button>
+    <div id="menu">
+      <button class="premium-btn" onclick="startGame()">Jugar</button>
+    </div>
+
+    <div id="game" style="display:none;">
+      <p id="question"></p>
+      <div id="options"></div>
+      <p id="result"></p>
+    </div>
   </div>
 
   <script src="script.js"></script>
