@@ -2,12 +2,12 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Modo Liga Trivia Futbol</title>
+  <title>Modo Carrera Trivia Futbol</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
-    <h1 id="game-title">Modo Liga Trivia Futbol</h1>
+    <h1 id="game-title">Modo Carrera Trivia Futbol</h1>
 
     <!-- Selección de liga y equipo -->
     <div id="menu">
@@ -15,7 +15,17 @@
       <select id="liga-select"></select>
       <h2>Elige tu equipo</h2>
       <select id="team-select"></select>
-      <button class="premium-btn" onclick="startMatch()">Comenzar Partido</button>
+      <button class="premium-btn" onclick="entrarLiga()">Entrar a la Liga</button>
+    </div>
+
+    <!-- Pantalla de Liga -->
+    <div id="liga" style="display:none;">
+      <h2 id="liga-nombre"></h2>
+      <h3>Tabla de posiciones</h3>
+      <table id="tabla-posiciones"></table>
+      <h3>Fixture</h3>
+      <div id="fixture"></div>
+      <button class="premium-btn" onclick="startMatch()">Jugar próximo partido</button>
     </div>
 
     <!-- Partido -->
