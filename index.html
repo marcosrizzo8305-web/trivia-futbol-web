@@ -2,47 +2,32 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Modo Carrera Trivia Futbol</title>
+  <title>Trivia Fútbol</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
-    <h1 id="game-title">Modo Carrera Trivia Futbol</h1>
-
-    <!-- Selección de liga y equipo -->
-    <div id="menu">
-      <h2>Elige tu liga</h2>
-      <select id="liga-select"></select>
-      <h2>Elige tu equipo</h2>
-      <select id="team-select"></select>
-      <button class="premium-btn" id="btnEntrar">Entrar a la Liga</button>
-    </div>
-
-    <!-- Pantalla de Liga -->
-    <div id="liga" style="display:none;">
-      <h2 id="liga-nombre"></h2>
-      <h3>Tabla de posiciones</h3>
-      <table id="tabla-posiciones"></table>
-      <h3>Fixture</h3>
-      <div id="fixture"></div>
-      <button class="premium-btn" onclick="startMatch()">Jugar próximo partido</button>
-    </div>
-
-    <!-- Partido -->
-    <div id="match" style="display:none;">
-      <h2 id="match-info"></h2>
-      <p id="timer"></p>
-      <p id="score"></p>
-      <h3 id="question"></h3>
-      <div id="options" class="options-grid"></div>
-      <p id="result"></p>
-    </div>
-
-    <!-- Sonidos -->
-    <audio id="sound-correct" src="correct.mp3"></audio>
-    <audio id="sound-wrong" src="wrong.mp3"></audio>
-
-    <script src="script.js"></script>
+  <div id="menu">
+    <select id="liga-select"></select>
+    <select id="team-select"></select>
+    <button id="btnEntrar">Entrar a la Liga</button>
   </div>
+
+  <div id="liga" style="display:none;">
+    <h2 id="liga-nombre"></h2>
+    <table id="tabla-posiciones"></table>
+    <div id="fixture"></div>
+    <button onclick="startMatch()">Jugar próximo partido</button>
+  </div>
+
+  <div id="match" style="display:none;">
+    <h2 id="match-info"></h2>
+    <div id="score"></div>
+    <div id="timer"></div>
+    <div id="question"></div>
+    <div id="options"></div>
+    <div id="result"></div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
