@@ -4,6 +4,9 @@ let ligaSeleccionada, team, opponent;
 let scoreTeam = 0, scoreOpponent = 0;
 let matchTime = 120;
 let timerInterval;
+let tabla = [];
+let fixture = {};
+let fechaActual = 1;
 
 // Cargar preguntas y ligas
 Promise.all([
@@ -12,7 +15,7 @@ Promise.all([
 ]).then(([pregData, ligaData]) => {
   preguntas = pregData;
   ligas = ligaData;
-  cargarLigas(); // recién acá llenamos los selects
+  cargarLigas();
 });
 
 function cargarLigas() {
@@ -24,7 +27,7 @@ function cargarLigas() {
     ligaSelect.add(opt);
   });
   ligaSelect.onchange = cargarEquipos;
-  cargarEquipos(); // inicial
+  cargarEquipos();
 }
 
 function cargarEquipos() {
@@ -39,13 +42,56 @@ function cargarEquipos() {
   });
 }
 
-function startMatch() {
+function entrarLiga() {
   team = document.getElementById("team-select").value;
-  const equipos = ligas[ligaSeleccionada];
-  opponent = equipos[Math.floor(Math.random()*equipos.length)];
-  while(opponent === team) opponent = equipos[Math.floor(Math.random()*equipos.length)];
-
   document.getElementById("menu").style.display = "none";
+  document.getElementById("liga").style.display = "block";
+  document.getElementById("liga-nombre").innerText = "Liga " + ligaSeleccionada;
+
+  tabla = ligas[ligaSeleccionada].map(eq => ({
+    equipo: eq, pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, pts: 0
+  }));
+
+  // Fixture simple: cada equipo juega contra todos una vez
+  fixture = {};
+  let equipos = [...ligas[ligaSeleccionada]];
+  let fecha = 1;
+  for(let i=0;i<equipos.length;i++) {
+    for(let j=i+1;j<equipos.length;j++) {
+      if(!fixture["fecha"+fecha]) fixture["fecha"+fecha] = [];
+      fixture["fecha"+fecha].push({local:equipos[i],visitante:equipos[j]});
+      fecha++;
+    }
+  }
+  mostrarTabla();
+  mostrarFixture();
+}
+
+function mostrarTabla() {
+  const tablaDiv = document.getElementById("tabla-posiciones");
+  tablaDiv.innerHTML = "<tr><th>Equipo</th><th>PJ</th><th>PG</th><th>PE</th><th>PP</th><th>GF</th><th>GC</th><th>Pts</th></tr>";
+  tabla.forEach(eq=>{
+    tablaDiv.innerHTML += `<tr><td>${eq.equipo}</td><td>${eq.pj}</td><td>${eq.pg}</td><td>${eq.pe}</td><td>${eq.pp}</td><td>${eq.gf}</td><td>${eq.gc}</td><td>${eq.pts}</td></tr>`;
+  });
+}
+
+function mostrarFixture() {
+  const fixtureDiv = document.getElementById("fixture");
+  fixtureDiv.innerHTML = "";
+  Object.keys(fixture).forEach(f=>{
+    fixtureDiv.innerHTML += `<h4>${f}</h4>`;
+    fixture[f].forEach(p=>{
+      fixtureDiv.innerHTML += `<p>${p.local} vs ${p.visitante}</p>`;
+    });
+  });
+}
+
+function startMatch() {
+  const partidos = fixture["fecha"+fechaActual];
+  const miPartido = partidos.find(p=>p.local===team || p.visitante===team);
+  opponent = (miPartido.local===team)?miPartido.visitante:miPartido.local;
+
+  document.getElementById("liga").style.display = "none";
   document.getElementById("match").style.display = "block";
   document.getElementById("match-info").innerText = `${team} vs ${opponent}`;
   scoreTeam = 0; scoreOpponent = 0;
@@ -63,43 +109,24 @@ function updateTimer() {
     clearInterval(timerInterval);
     document.getElementById("result").innerText = `🏁 Fin del partido. Resultado: ${team} ${scoreTeam} - ${scoreOpponent} ${opponent}`;
     document.getElementById("options").innerHTML = "";
+    actualizarTabla();
+    fechaActual++;
+    document.getElementById("match").style.display = "none";
+    document.getElementById("liga").style.display = "block";
+    mostrarTabla();
   }
 }
 
 function nuevaOcasión() {
   if(matchTime <= 0) return;
+  const esTuOcasión = Math.random() < 0.5;
   const q = preguntas[Math.floor(Math.random()*preguntas.length)];
-  mostrarPregunta(q);
+  mostrarPregunta(q, esTuOcasión);
 }
 
-function mostrarPregunta(q) {
+function mostrarPregunta(q, esTuOcasión) {
   document.getElementById("question").innerText = q.question;
   const optionsDiv = document.getElementById("options");
   optionsDiv.innerHTML = "";
   q.options.forEach(opt=>{
     const btn = document.createElement("div");
-    btn.className = "option-card";
-    btn.innerHTML = `<p>${opt}</p>`;
-    btn.onclick = ()=>checkAnswer(opt,q.answer);
-    optionsDiv.appendChild(btn);
-  });
-}
-
-function checkAnswer(selected,correct) {
-  if(matchTime <= 0) return;
-  if(selected === correct) {
-    scoreTeam++;
-    document.getElementById("result").innerText = "✅ Gol de " + team;
-    document.getElementById("sound-correct").play();
-  } else {
-    scoreOpponent++;
-    document.getElementById("result").innerText = "❌ Ocasión fallida, gol de " + opponent;
-    document.getElementById("sound-wrong").play();
-  }
-  updateScore();
-  setTimeout(nuevaOcasión,2000);
-}
-
-function updateScore() {
-  document.getElementById("score").innerText = `${team} ${scoreTeam} - ${scoreOpponent} ${opponent}`;
-}
