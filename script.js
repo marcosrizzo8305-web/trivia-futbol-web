@@ -1,38 +1,34 @@
-const questions = [
-  { question: "¿Quién ganó el Mundial de 1986?", options: ["Argentina","Brasil","Alemania"], answer: "Argentina" },
-  { question: "¿Qué jugador tiene más goles en mundiales?", options: ["Miroslav Klose","Pelé","Messi"], answer: "Miroslav Klose" },
-  { question: "¿Cuál es el estadio más grande de Inglaterra?", options: ["Wembley","Old Trafford","Anfield"], answer: "Wembley" },
-  { question: "¿Qué selección ganó el Mundial 2010?", options: ["España","Holanda","Alemania"], answer: "España" },
-  { question: "¿Quién es conocido como 'O Rei'?", options: ["Pelé","Maradona","Cristiano Ronaldo"], answer: "Pelé" }
-];
-
+let preguntas = [];
+let ligas = {}; // cargado desde tu ligas.json
+let ligaSeleccionada = "Argentina";
+let equipos = [];
 let team, opponent;
 let scoreTeam = 0, scoreOpponent = 0;
-let matchTime = 120; // 2 minutos en segundos
+let matchTime = 120;
 let timerInterval;
 
-function startMatch() {
-  team = document.getElementById("team-select").value;
-  const rivals = ["River Plate","Boca Juniors","Barcelona","Real Madrid","Manchester United","Liverpool"];
-  opponent = rivals[Math.floor(Math.random()*rivals.length)];
-  while(opponent === team) opponent = rivals[Math.floor(Math.random()*rivals.length)];
+fetch("preguntas.json")
+  .then(res => res.json())
+  .then(data => preguntas = data);
 
-  document.getElementById("menu").style.display = "none";
-  document.getElementById("match").style.display = "block";
+function startMatch() {
+  equipos = ligas[ligaSeleccionada];
+  team = equipos[0]; // elegido por jugador
+  opponent = equipos[Math.floor(Math.random()*equipos.length)];
+  while(opponent === team) opponent = equipos[Math.floor(Math.random()*equipos.length)];
+
   document.getElementById("match-info").innerText = `${team} vs ${opponent}`;
   scoreTeam = 0; scoreOpponent = 0;
   matchTime = 120;
   updateScore();
-  showQuestion();
   timerInterval = setInterval(updateTimer,1000);
+  nuevaOcasión();
 }
 
 function updateTimer() {
   matchTime--;
   document.getElementById("timer").innerText = `⏱ Tiempo: ${matchTime}s`;
-  if(matchTime === 60) {
-    document.getElementById("result").innerText = "⚽ Fin del primer tiempo";
-  }
+  if(matchTime === 60) document.getElementById("result").innerText = "⚽ Fin del primer tiempo";
   if(matchTime <= 0) {
     clearInterval(timerInterval);
     document.getElementById("result").innerText = `🏁 Fin del partido. Resultado: ${team} ${scoreTeam} - ${scoreOpponent} ${opponent}`;
@@ -40,9 +36,13 @@ function updateTimer() {
   }
 }
 
-function showQuestion() {
+function nuevaOcasión() {
   if(matchTime <= 0) return;
-  const q = questions[Math.floor(Math.random()*questions.length)];
+  const q = preguntas[Math.floor(Math.random()*preguntas.length)];
+  mostrarPregunta(q);
+}
+
+function mostrarPregunta(q) {
   document.getElementById("question").innerText = q.question;
   const optionsDiv = document.getElementById("options");
   optionsDiv.innerHTML = "";
@@ -56,7 +56,6 @@ function showQuestion() {
 }
 
 function checkAnswer(selected,correct) {
-  if(matchTime <= 0) return;
   if(selected === correct) {
     scoreTeam++;
     document.getElementById("result").innerText = "✅ Gol de " + team;
@@ -67,7 +66,7 @@ function checkAnswer(selected,correct) {
     document.getElementById("sound-wrong").play();
   }
   updateScore();
-  setTimeout(showQuestion,2000);
+  setTimeout(nuevaOcasión,2000);
 }
 
 function updateScore() {
