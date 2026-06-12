@@ -100,15 +100,11 @@ function mostrarFixture() {
 
 function startMatch() {
   const partidos = fixture["fecha"+fechaActual];
-  if (!partidos || partidos.length === 0) {
-    alert("No hay partidos en la fecha " + fechaActual);
-    return;
-  }
+  if (!partidos) { alert("No hay más fechas"); return; }
+
   const miPartido = partidos.find(p=>p.local===team || p.visitante===team);
-  if (!miPartido) {
-    alert("Tu equipo no juega en esta fecha");
-    return;
-  }
+  if (!miPartido) { alert("Tu equipo descansa en esta fecha"); return; }
+
   opponent = (miPartido.local===team)?miPartido.visitante:miPartido.local;
 
   document.getElementById("liga").style.display = "none";
@@ -196,4 +192,12 @@ function actualizarTabla(gf, gc) {
   eqTeam.gf += gf; eqTeam.gc += gc;
   eqOpp.gf += gc; eqOpp.gc += gf;
   if (gf > gc) { eqTeam.pg++; eqOpp.pp++; eqTeam.pts+=3; }
-  else if (gf < gc) { eqOpp.pg++; eqTeam.pp++; eqOpp.pts+=3;
+  else if (gf < gc) { eqOpp.pg++; eqTeam.pp++; eqOpp.pts+=3; }
+  else { eqTeam.pe++; eqOpp.pe++; eqTeam.pts++; eqOpp.pts++; }
+}
+
+function simularOtrosPartidos() {
+  const partidos = fixture["fecha"+fechaActual];
+  partidos.forEach(p=>{
+    if(p.local!==team && p.visitante!==team) {
+      let gf = Math.floor(Math.random
