@@ -16,6 +16,8 @@ Promise.all([
   preguntas = pregData;
   ligas = ligaData;
   inicializarMenu();
+}).catch(err => {
+  console.error("Error cargando JSON:", err);
 });
 
 function inicializarMenu() {
@@ -150,21 +152,4 @@ function checkAnswer(selected,correct,esTuOcasión) {
     } else {
       scoreOpponent++;
       document.getElementById("result").innerText = "⚽ Gol del rival " + opponent;
-      document.getElementById("sound-wrong").play();
-    }
-  } else {
-    if(esTuOcasión) {
-      document.getElementById("result").innerText = "❌ Ocasión fallida de " + team;
-      document.getElementById("sound-wrong").play();
-    } else {
-      scoreOpponent++;
-      document.getElementById("result").innerText = "⚽ Gol del rival " + opponent;
-      document.getElementById("sound-correct").play();
-    }
-  }
-  updateScore();
-  setTimeout(nuevaOcasión,2000);
-}
-
-function updateScore() {
-  document.getElementById("score").innerText = `${team} ${score
+      document.getElementById("sound-wrong
