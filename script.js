@@ -2,7 +2,7 @@ let preguntas = [];
 let ligas = {};
 let ligaSeleccionada, team, opponent;
 let scoreTeam = 0, scoreOpponent = 0;
-let matchTime = 120;
+let matchTime = 60;
 let timerInterval;
 let tabla = [];
 let fixture = {};
@@ -101,17 +101,15 @@ function mostrarFixture() {
 function startMatch() {
   const partidos = fixture["fecha"+fechaActual];
   if (!partidos) { alert("No hay más fechas"); return; }
-
   const miPartido = partidos.find(p=>p.local===team || p.visitante===team);
   if (!miPartido) { alert("Tu equipo descansa en esta fecha"); return; }
 
   opponent = (miPartido.local===team)?miPartido.visitante:miPartido.local;
-
   document.getElementById("liga").style.display = "none";
   document.getElementById("match").style.display = "block";
   document.getElementById("match-info").innerText = `${team} vs ${opponent}`;
   scoreTeam = 0; scoreOpponent = 0;
-  matchTime = 30; // más corto para probar
+  matchTime = 30;
   updateScore();
   timerInterval = setInterval(updateTimer,1000);
   nuevaOcasión();
@@ -156,4 +154,5 @@ function checkAnswer(selected,correct,esTuOcasión) {
   if(matchTime <= 0) return;
   if(selected === correct) {
     if(esTuOcasión) scoreTeam++; else scoreOpponent++;
-  }
+  } else {
+    if(!esTu
