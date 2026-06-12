@@ -12,16 +12,11 @@ body {
 .container {
   text-align: center;
   width: 90%;
-  max-width: 700px;
+  max-width: 900px;
 }
 
 #game-title {
   color: #00ff90;
-  margin-bottom: 20px;
-}
-
-h2 {
-  font-size: 26px;
   margin-bottom: 20px;
 }
 
@@ -34,7 +29,6 @@ h2 {
   margin: 12px;
   font-size: 18px;
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
   transition: transform 0.2s;
 }
 
@@ -56,17 +50,19 @@ h2 {
   transition: transform 0.2s;
 }
 
-.option-card p {
-  margin: 0;
-  font-size: 18px;
-}
-
 .option-card:hover {
   transform: scale(1.05);
 }
 
-#timer {
-  font-size: 20px;
-  margin-top: 10px;
-  color: #ffcc00;
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+table, th, td {
+  border: 1px solid #555;
+}
+th, td {
+  padding: 8px;
+  text-align: center;
 }
