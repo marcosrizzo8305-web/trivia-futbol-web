@@ -111,7 +111,7 @@ function startMatch() {
   document.getElementById("match").style.display = "block";
   document.getElementById("match-info").innerText = `${team} vs ${opponent}`;
   scoreTeam = 0; scoreOpponent = 0;
-  matchTime = 120;
+  matchTime = 30; // más corto para probar
   updateScore();
   timerInterval = setInterval(updateTimer,1000);
   nuevaOcasión();
@@ -120,7 +120,6 @@ function startMatch() {
 function updateTimer() {
   matchTime--;
   document.getElementById("timer").innerText = `⏱ Tiempo: ${matchTime}s`;
-  if(matchTime === 60) document.getElementById("result").innerText = "⚽ Fin del primer tiempo";
   if(matchTime <= 0) {
     clearInterval(timerInterval);
     document.getElementById("result").innerText = `🏁 Fin del partido. Resultado: ${team} ${scoreTeam} - ${scoreOpponent} ${opponent}`;
@@ -146,9 +145,8 @@ function mostrarPregunta(q, esTuOcasión) {
   const optionsDiv = document.getElementById("options");
   optionsDiv.innerHTML = "";
   q.options.forEach(opt=>{
-    const btn = document.createElement("div");
-    btn.className = "option-card";
-    btn.innerHTML = `<p>${opt}</p>`;
+    const btn = document.createElement("button");
+    btn.innerText = opt;
     btn.onclick = ()=>checkAnswer(opt,q.answer,esTuOcasión);
     optionsDiv.appendChild(btn);
   });
@@ -157,51 +155,5 @@ function mostrarPregunta(q, esTuOcasión) {
 function checkAnswer(selected,correct,esTuOcasión) {
   if(matchTime <= 0) return;
   if(selected === correct) {
-    if(esTuOcasión) {
-      scoreTeam++;
-      document.getElementById("result").innerText = "✅ Gol de " + team;
-    } else {
-      scoreOpponent++;
-      document.getElementById("result").innerText = "⚽ Gol del rival " + opponent;
-    }
-  } else {
-    if(esTuOcasión) {
-      document.getElementById("result").innerText = "❌ Ocasión fallida de " + team;
-    } else {
-      scoreOpponent++;
-      document.getElementById("result").innerText = "⚽ Gol del rival " + opponent;
-    }
+    if(esTuOcasión) scoreTeam++; else scoreOpponent++;
   }
-  updateScore();
-  setTimeout(nuevaOcasión,2000);
-}
-
-function updateScore() {
-  document.getElementById("score").innerText = `${team} ${scoreTeam} - ${scoreOpponent} ${opponent}`;
-}
-
-function actualizarTabla(gf, gc) {
-  let eqTeam = tabla.find(e=>e.equipo===team);
-  let eqOpp = tabla.find(e=>e.equipo===opponent);
-  eqTeam.pj++; eqOpp.pj++;
-  eqTeam.gf += gf; eqTeam.gc += gc;
-  eqOpp.gf += gc; eqOpp.gc += gf;
-  if (gf > gc) { eqTeam.pg++; eqOpp.pp++; eqTeam.pts+=3; }
-  else if (gf < gc) { eqOpp.pg++; eqTeam.pp++; eqOpp.pts+=3; }
-  else { eqTeam.pe++; eqOpp.pe++; eqTeam.pts++; eqOpp.pts++; }
-}
-
-function simularOtrosPartidos() {
-  const partidos = fixture["fecha"+fechaActual];
-  partidos.forEach(p=>{
-    if(p.local!==team && p.visitante!==team) {
-      let gf = Math.floor(Math.random()*4);
-      let gc = Math.floor(Math.random()*4);
-      actualizarTablaPartido(p.local, p.visitante, gf, gc);
-    }
-  });
-}
-
-function actualizarTablaPartido(local, visitante, gf, gc) {
-  let eqLocal = tabla.find(e=>e.equipo===local);
-  let eqVis = tabla.find(e=>e.equipo
