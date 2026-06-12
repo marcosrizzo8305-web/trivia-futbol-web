@@ -31,7 +31,8 @@ function inicializarMenu() {
   ligaSelect.onchange = cargarEquipos;
   cargarEquipos();
 
-  document.getElementById("btnEntrar").onclick = entrarLiga;
+  // 🔑 Enlazamos el botón correctamente
+  document.getElementById("btnEntrar").addEventListener("click", entrarLiga);
 }
 
 function cargarEquipos() {
@@ -50,6 +51,11 @@ function cargarEquipos() {
 // 3. Pantalla de liga
 function entrarLiga() {
   team = document.getElementById("team-select").value;
+  if (!team) {
+    alert("Primero selecciona un equipo");
+    return;
+  }
+
   document.getElementById("menu").style.display = "none";
   document.getElementById("liga").style.display = "block";
   document.getElementById("liga-nombre").innerText = "Liga " + ligaSeleccionada;
