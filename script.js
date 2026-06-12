@@ -15,19 +15,22 @@ Promise.all([
 ]).then(([pregData, ligaData]) => {
   preguntas = pregData;
   ligas = ligaData;
-  cargarLigas();
+  inicializarMenu();
 });
 
-function cargarLigas() {
+function inicializarMenu() {
   const ligaSelect = document.getElementById("liga-select");
   ligaSelect.innerHTML = "";
   Object.keys(ligas).forEach(liga => {
     const opt = document.createElement("option");
+    opt.value = liga;
     opt.text = liga;
     ligaSelect.add(opt);
   });
   ligaSelect.onchange = cargarEquipos;
   cargarEquipos();
+
+  document.getElementById("btnEntrar").onclick = entrarLiga;
 }
 
 function cargarEquipos() {
@@ -37,6 +40,7 @@ function cargarEquipos() {
   teamSelect.innerHTML = "";
   equipos.forEach(eq => {
     const opt = document.createElement("option");
+    opt.value = eq;
     opt.text = eq;
     teamSelect.add(opt);
   });
@@ -52,7 +56,7 @@ function entrarLiga() {
     equipo: eq, pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, pts: 0
   }));
 
-  // Fixture simple: cada equipo juega contra todos una vez
+  // Fixture simple
   fixture = {};
   let equipos = [...ligas[ligaSeleccionada]];
   let fecha = 1;
@@ -109,7 +113,6 @@ function updateTimer() {
     clearInterval(timerInterval);
     document.getElementById("result").innerText = `🏁 Fin del partido. Resultado: ${team} ${scoreTeam} - ${scoreOpponent} ${opponent}`;
     document.getElementById("options").innerHTML = "";
-    actualizarTabla();
     fechaActual++;
     document.getElementById("match").style.display = "none";
     document.getElementById("liga").style.display = "block";
@@ -130,3 +133,38 @@ function mostrarPregunta(q, esTuOcasión) {
   optionsDiv.innerHTML = "";
   q.options.forEach(opt=>{
     const btn = document.createElement("div");
+    btn.className = "option-card";
+    btn.innerHTML = `<p>${opt}</p>`;
+    btn.onclick = ()=>checkAnswer(opt,q.answer,esTuOcasión);
+    optionsDiv.appendChild(btn);
+  });
+}
+
+function checkAnswer(selected,correct,esTuOcasión) {
+  if(matchTime <= 0) return;
+  if(selected === correct) {
+    if(esTuOcasión) {
+      scoreTeam++;
+      document.getElementById("result").innerText = "✅ Gol de " + team;
+      document.getElementById("sound-correct").play();
+    } else {
+      scoreOpponent++;
+      document.getElementById("result").innerText = "⚽ Gol del rival " + opponent;
+      document.getElementById("sound-wrong").play();
+    }
+  } else {
+    if(esTuOcasión) {
+      document.getElementById("result").innerText = "❌ Ocasión fallida de " + team;
+      document.getElementById("sound-wrong").play();
+    } else {
+      scoreOpponent++;
+      document.getElementById("result").innerText = "⚽ Gol del rival " + opponent;
+      document.getElementById("sound-correct").play();
+    }
+  }
+  updateScore();
+  setTimeout(nuevaOcasión,2000);
+}
+
+function updateScore() {
+  document.getElementById("score").innerText = `${team} ${score
