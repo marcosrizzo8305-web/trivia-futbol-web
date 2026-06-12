@@ -1,5 +1,12 @@
 {
-  "Argentina": ["River Plate","Boca Juniors","Racing Club"],
-  "España": ["Barcelona","Real Madrid","Atlético de Madrid"],
-  "Inglaterra": ["Liverpool","Manchester United","Arsenal"]
+  "Argentina": [
+    {"nombre":"River Plate","logo":"river.png"},
+    {"nombre":"Boca Juniors","logo":"boca.png"},
+    {"nombre":"Racing Club","logo":"racing.png"}
+  ],
+  "España": [
+    {"nombre":"Barcelona","logo":"barcelona.png"},
+    {"nombre":"Real Madrid","logo":"realmadrid.png"},
+    {"nombre":"Atlético de Madrid","logo":"atletico.png"}
+  ]
 }
