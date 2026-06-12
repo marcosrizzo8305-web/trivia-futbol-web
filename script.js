@@ -12,7 +12,7 @@ Promise.all([
 ]).then(([pregData, ligaData]) => {
   preguntas = pregData;
   ligas = ligaData;
-  cargarLigas();
+  cargarLigas(); // recién acá llenamos los selects
 });
 
 function cargarLigas() {
