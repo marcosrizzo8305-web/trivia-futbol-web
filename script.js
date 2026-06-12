@@ -1,17 +1,14 @@
-let preguntas = [];
 let ligas = {};
+let preguntas = [];
 
-// Cargar JSON y recién después inicializar menús
 Promise.all([
-  fetch("preguntas.json").then(res => res.json()),
-  fetch("ligas.json").then(res => res.json())
-]).then(([pregData, ligaData]) => {
-  preguntas = pregData;
+  fetch("ligas.json").then(res => res.json()),
+  fetch("preguntas.json").then(res => res.json())
+]).then(([ligaData, pregData]) => {
   ligas = ligaData;
+  preguntas = pregData;
   inicializarMenu();
-}).catch(err => {
-  console.error("Error cargando JSON:", err);
-});
+}).catch(err => console.error("Error cargando JSON:", err));
 
 function inicializarMenu() {
   const ligaSelect = document.getElementById("liga-select");
@@ -24,8 +21,6 @@ function inicializarMenu() {
   });
   ligaSelect.onchange = cargarEquipos;
   cargarEquipos();
-
-  document.getElementById("btnEntrar").onclick = entrarLiga;
 }
 
 function cargarEquipos() {
@@ -33,18 +28,11 @@ function cargarEquipos() {
   const teamSelect = document.getElementById("team-select");
   teamSelect.innerHTML = "";
 
-  ligaSeleccionada = ligaSelect.value;
-  const equipos = ligas[ligaSeleccionada] || [];
+  const equipos = ligas[ligaSelect.value] || [];
   equipos.forEach(eq => {
     const opt = document.createElement("option");
     opt.value = eq;
     opt.text = eq;
     teamSelect.add(opt);
   });
-}
-
-function entrarLiga() {
-  const teamSelect = document.getElementById("team-select");
-  team = teamSelect.value;
-  alert("Entraste a la liga " + ligaSeleccionada + " con el equipo " + team);
 }
